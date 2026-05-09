@@ -102,9 +102,10 @@ export default defineComponent({
      * refer to https://css-tricks.com/building-progress-ring-quickly/
      */
     const strokeDashoffset = computed(() => {
+      const clampedPercent = Math.min(Math.max(props.progressBarPercent, 0), 100);
       return (
         circumference.value -
-        (props.progressBarPercent / 100) * circumference.value
+        (clampedPercent / 100) * circumference.value
       );
     });
 

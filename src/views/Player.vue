@@ -1082,7 +1082,7 @@ export default defineComponent({
      */
     const scorecardProgress = computed(() => {
       if (!state.maxMarks) return null;
-      return Math.max(state.marksScored / state.maxMarks, 0) * 100;
+      return Math.min(Math.max(state.marksScored / state.maxMarks, 0) * 100, 100);
     });
 
     /** result to be shown in the center of the progress bar of Scorecard */
