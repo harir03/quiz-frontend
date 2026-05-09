@@ -11,7 +11,7 @@
       />
       <p class="text-2xl align-middle">Page Not Found</p>
       <p class="text-lg text-gray-500 text-center w-10/12 sm:w-1/2">
-        We are unable to find what you are looking for
+        {{ reason || 'We are unable to find what you are looking for' }}
       </p>
     </div>
     <!-- 403 -->
@@ -25,7 +25,7 @@
       />
       <p class="text-2xl text-center">Access Denied</p>
       <p class="text-lg text-gray-500 text-center w-10/12 sm:w-1/2">
-        You do not have the permission to access this page
+        {{ reason || 'You do not have the permission to access this page' }}
       </p>
     </div>
     <!-- Quiz Not Available -->
@@ -68,6 +68,10 @@ export default defineComponent({
     type: {
       type: String,
       default: "404",
+    },
+    reason: {
+      type: String,
+      default: "",
     },
   },
   components: {

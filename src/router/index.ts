@@ -139,14 +139,14 @@ const routes = [
     name: "404",
     component: () =>
       import(/* webpackChunkName: "error" */ "@/views/Error.vue"),
-    props: { type: "404" },
+    props: (route: any) => ({ type: "404", reason: route.query.reason || "" }),
   },
   {
     path: "/403-access-denied",
     name: "403",
     component: () =>
       import(/* webpackChunkName: "error" */ "@/views/Error.vue"),
-    props: { type: "403" },
+    props: (route: any) => ({ type: "403", reason: route.query.reason || "" }),
   },
   {
     path: "/quiz-not-available",
@@ -190,14 +190,14 @@ router.beforeEach(async (to) => {
     const hasApiKey = requiredAuthKeys.every((key: string) => getQueryValue(to.query[key]) !== null);
 
     if (!hasApiKey) {
-      return { name: "403" };
+      return { name: "403", query: { reason: "Missing or invalid API key in the URL" } };
     }
 
     const userIdFromQuery = getQueryValue(to.query.userId);
 
     // If userId is in URL, it must be whitelisted
     if (userIdFromQuery && !ALLOWED_TEST_USER_IDS.includes(userIdFromQuery)) {
-      return { name: "403" };
+      return { name: "403", query: { reason: "The provided user ID is not authorized for direct access" } };
     }
 
     // Allow whitelisted test users without checking tokens
@@ -219,7 +219,7 @@ router.beforeEach(async (to) => {
     to.meta.portalIdentifiers = identifiers;
 
     if (!identifiers?.userId) {
-      return { name: "403" };
+      return { name: "403", query: { reason: "Unable to verify your identity. Please use a valid quiz link." } };
     }
 
     if (launchToken && quizId) {
