@@ -1099,9 +1099,12 @@ export default defineComponent({
     const questionHeaderSuffix = computed(() => {
       if (isQuizAssessment.value) {
         return props.questionSetTitle;
-      } else {
-        return `Total Questions: ${props.numQuestions}`;
       }
+      // For non-assessment quizzes, show section name when available
+      if (props.questionSetTitle) {
+        return `${props.questionSetTitle} | Total Questions: ${props.numQuestions}`;
+      }
+      return `Total Questions: ${props.numQuestions}`;
     });
 
     // styling class for the question image and loading spinner containers
